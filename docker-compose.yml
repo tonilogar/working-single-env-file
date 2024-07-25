@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  backend_auth0:
+    environment:
+    # Leemos las variables desde el fichero .env ejemplo:
+    # ENV_VARIABLE y le pasamos el valor a la variable ENV_VARIABLE_DOCKER 
+    # para usarla dentro del contenedor docker
+      - PORT_BACKEND_AUTH0_DOCKER=${PORT_BACKEND_AUTH0}
+      - DOMAIN_AUTH0_DOCKER=${DOMAIN_AUTH0}
+      - CLIENT_ID_AUTH0_DOCKER=${CLIENT_ID_AUTH0}
+      - CLIENT_SECRET_DOCKER=${CLIENT_SECRET}
+      - AUDIENCE_AUTH0_DOCKER=${AUDIENCE_AUTH0}
+      - JWT_SECRET_DOCKER=${JWT_SECRET}
+      - TEST_VARIABLE_DOCKER=${TEST_VARIABLE}
+    build:
+      context: ./backend_auth0
+    ports:
+    # Aquí leemos la variable directamente delfichero .env
+      - "${PORT_BACKEND_AUTH0}:${PORT_BACKEND_AUTH0}"
+    volumes:
+      - ./backend_auth0:/app
+      - /app/node_modules
+    command: ${COMMAND}
+  backend_api_rest:
+    environment:
+      - ENV_VARIABLE_DOCKER=${ENV_VARIABLE}  
+      - PORT_BACKEND_API_REST_DOCKER=${PORT_BACKEND_API_REST}
+      - MONGO_URI_DOCKER=${MONGO_URI}
+    env_file:
+      - .env
+    build:
+      context: ./backend_api_rest
+    ports:
+      - "${PORT_BACKEND_API_REST}:${PORT_BACKEND_API_REST}" 
+    volumes:
+      - ./backend_api_rest:/app
+      - /app/node_modules
+    command: ${COMMAND}
+  #frontend_01:
+  #  environment:
+  #    - VITE_VARIABLE_FRONTEND_01=${VITE_VARIABLE_FRONTEND_01} 
+  #    - VITE_PORT_BACKEND_API_REST=${VITE_PORT_BACKEND_API_REST} 
+  #    - VITE_PORT_FRONTEND_01=${VITE_PORT_FRONTEND_01} 
+  #  build:
+  #    context: ./frontend_01
+  #  ports:
+  #    - "${VITE_PORT_FRONTEND_01}:${VITE_PORT_FRONTEND_01}"
+  #  volumes:
+  #    #- ./frontend_01/dist:/usr/src/app #para producción
+  #    - ./frontend_01:/app
+  #    - /app/node_modules
+  #  command: ${VITE_COMMAND}
+  #  networks:
+  #    - app-network
+networks:
+  app-network:
+    driver: bridge
+

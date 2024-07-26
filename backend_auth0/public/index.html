@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html class="h-100">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="/images/logo_tonilogar.png" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="/css/main.css">
@@ -10,37 +9,24 @@
 </head>
 <body>
   <nav class="navbar">
-    <div class="left">
-      <button id="qsLoginBtn" onclick="login()" class="btn auth-invisible hidden">Log in</button>
-      <a href="/external-api" class="auth-visible hidden route-link">Start</a>
-      <a href="#" class="auth-visible hidden" id="qsLogoutBtn" onclick="logout()">Log out</a>
-    </div>
+      <button id="log-in" onclick="login()" class="log-in">Log in</button>
+      <a href="/external-api" id="start" class="start">Start</a>
+      <a href="#" class="log-out" id="logout" onclick="logout()">Log out</a>
   </nav>
   
-  <pre><code id="profile-data" class="json"></code></pre>
-
-  <div id="content-home" class="page"></div>
-
-  <div class="page hidden" id="content-external-api">
-    
-    <div class="tools">
-      <h1 id="test-variable-display">test variable</h1>
-      <h1 class="tool-h1">Select tool</h1>
-      <a href='./publicStatusProjects/indexStatusProjects.html'><button class="button_tools">STATUS PROJECTS PCOT</button></a>
-      <a href='./publicSubsidences/indexSubsidences.html'><button class="button_tools">SUBSIDENCES</button></a>
-      <button class="button_tools" onclick="redirectToTool()">DOWNLOAD IMAGES OF COPERNICUS CONSTELLATION</button>
-      <a href='./publicCartGeoBimTools/indexCartGeoBimTools.html'><button class="button_tools">CART GEO BIM TOOLS</button></a>
-      <a href='./publicLidar/local-server-3dtiles-download-cesiumIon.html'><button class="button_tools">TEST AERIAL LIDAR</button></a>
-      <a href='./publicAddEditDataBase/indexAddEditDataBase.html'><button class="button_tools">ADD EDIT DATA BASE</button></a>
-      <a href='./publicTestSubsidences/indexSubsidences.html'><button class="button_tools">TEST SERVER MBTILES DOCKER SUBSIDENCES</button></a>
-      <!-- <button class="button_tools" onclick="logout()">Cerrar Sesión</button> -->
+  <div class="tools">
+    <h1 class="tool-h1">Select tool</h1>
+    <div class="tool-buttons">
+      <a href='./tool_01.html'><button class="button_tools">TOOL 1</button></a>
+      <a href='./tool_02.html'><button class="button_tools">TOOL 2</button></a>
+      <a href='./tool_03.html'><button class="button_tools">TOOL 3</button></a>
+      <a href='./tool_04.html'><button class="button_tools">TOOL 4</button></a>
+      <a href='./tool_05.html'><button class="button_tools">TOOL 5</button></a>
+      <a href='./tool_06.html'><button class="button_tools">TOOL 6</button></a>
+      <a href='./tool_07.html'><button class="button_tools">TOOL 7</button></a>
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/app.js"></script>
+  <footer>FOOTER</footer>
 </body>
 </html>

@@ -5,10 +5,9 @@ const { auth } = require("express-oauth2-jwt-bearer");
 const { join } = require("path");
 const jwt = require("jsonwebtoken");
 
-
 const app = express();
 const test_variable =  process.env.TEST_VARIABLE_DOCKER
-/* Leemos las variables creadas en docker-compose para el contenedor backend_auth */
+
 const authConfig = {
   domain: process.env.DOMAIN_AUTH0_DOCKER,
   clientId: process.env.CLIENT_ID_AUTH0_DOCKER,
@@ -30,20 +29,30 @@ const checkJwt = auth({
   issuerBaseURL: `https://${authConfig.domain}`,
 });
 
-// Ruta para generar un token JWT
-app.post('/generate_token', (req, res) => {
-  const payload = {
-    user: process.env.NICKNAME_AUTH0_DOCKER // Usa datos relevantes
-  };
+// Ruta de registro de usuario
+app.post('/register', (req, res) => {
+  const { userId, email } = req.body;
+
+  if (!userId || !email) {
+    return res.status(400).json({ error: 'User ID and email are required' });
+  }
+
+  // Imprimir los datos del usuario
+  console.log('User ID:', userId);
+  console.log('Email:', email);
+
+  const payload = { userId, email };
   const token = jwt.sign(payload, authConfig.jwtSecret, { expiresIn: '1h' });
+
+  // Enviar el token de vuelta al cliente
   res.json({ token });
 });
 
-// Ruta para entregar las configuraciones de Auth0 con un token de acceso
+// Ruta para obtener la configuración de Auth0
 app.get('/auth_config', (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   try {
-    jwt.verify(token, authConfig.jwtSecret); // Asegúrate de tener un secreto JWT configurado
+    jwt.verify(token, authConfig.jwtSecret);
     res.json({
       domain: authConfig.domain,
       clientId: authConfig.clientId,
@@ -54,24 +63,25 @@ app.get('/auth_config', (req, res) => {
   }
 });
 
+// Ruta para obtener la variable de prueba
 app.get('/test_variable', (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   try {
-    jwt.verify(token, authConfig.jwtSecret); // Verifica el token JWT
-    res.json({ test_variable }); // Responde con test_variable
+    jwt.verify(token, authConfig.jwtSecret);
+    res.json({ test_variable });
   } catch (error) {
     res.status(401).json({ error: 'Unauthorized' });
   }
 });
 
+// Ruta protegida que verifica el token JWT
 app.get("/api/external", checkJwt, (req, res) => {
   res.send({
     msg: "Your access token was successfully validated!"
   });
 });
 
-
-
+// Middleware de manejo de errores
 app.use(function(err, req, res, next) {
   if (err.name === "UnauthorizedError") {
     return res.status(401).send({ msg: "Invalid token" });
@@ -79,6 +89,7 @@ app.use(function(err, req, res, next) {
   next(err, req, res);
 });
 
+// Manejo de la señal SIGINT para cerrar la aplicación
 process.on("SIGINT", function() {
   process.exit();
 });
@@ -87,4 +98,7 @@ process.on("SIGINT", function() {
 app.get('*', (req, res) => {
   res.redirect('/');
 });
+
+
+
 module.exports = app;

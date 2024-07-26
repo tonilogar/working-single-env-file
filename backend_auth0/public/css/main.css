@@ -1,76 +1,54 @@
-/* General styles */
-body {
-  font-family: Arial, sans-serif;
+/* Asegúrate de que el body y el html ocupen todo el alto de la ventana */
+html, body {
+  height: 100%;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Navbar styles */
-.navbar {
-  display: flex;
-  justify-content: flex-end;
-  background-color: #333;
-  padding: 10px;
-}
-
-.navbar a, .navbar button {
-  color: white;
-  text-decoration: none;
-  padding: 10px 15px;
-  margin: 0 5px;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.navbar a:hover, .navbar button:hover {
-  background-color: #555;
-}
-
-/* Tools section styles */
-.tools {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 20px;
 }
 
-.tool-h1 {
-  margin-bottom: 20px;
+/* Estilos para la barra de navegación */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  background-color: #f8f8f8; /* Puedes cambiar el color de fondo según tu diseño */
+}
+
+.navbar button, .navbar a {
+  margin: 0 10px;
+}
+
+/* Estilos para la sección de herramientas */
+.tools {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .tool-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  width: 100%;
-  max-width: 600px;
+  display: flex;
+  flex-direction: column; /* Alinea los botones en columnas */
+  align-items: center;    /* Centra las columnas de botones */
 }
 
 .button_tools {
+  margin: 10px;
   padding: 10px 20px;
-  background-color: #008CBA;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
 }
 
-.button_tools:hover {
-  background-color: #005f75;
-}
-
-/* Footer styles */
-footer {
+/* Estilos para el pie de página */
+.footer {
+  width: 100%;
   text-align: center;
-  background-color: #333;
-  color: white;
   padding: 10px 0;
+  background-color: black; /* Puedes cambiar el color de fondo según tu diseño */
+  position: absolute;
+  bottom: 0;
+  color: white;
 }

@@ -1,106 +1,66 @@
-body {
-  font-family: Arial, sans-serif;
+/* Asegúrate de que el body y el html ocupen todo el alto de la ventana */
+html, body {
+  height: 100%;
+  margin: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  background-color: #fff; /* Fondo blanco */
-  color: #000; /* Texto negro */
+  /* justify-content: center; */
+  font-family: Arial, sans-serif;
 }
+
 
 .navbar {
   display: flex;
-  justify-content: flex-start; /* Alineamos los elementos al inicio (izquierda) */
   align-items: center;
-  background-color: #000; /* Fondo negro */
-  padding: 10px 20px;
-  width: 100%;
+  justify-content: center;
+  gap: 16px;
+  margin: 0px, 10px, 10px, 10px;
   position: fixed;
   top: 0;
-  z-index: 1000;
-}
-
-.navbar .left {
-  display: flex;
-  align-items: center;
-}
-
-.navbar a, .navbar button {
-  color: #fff; /* Texto blanco */
-  text-decoration: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.navbar a:hover, .navbar button:hover {
-  background-color: #333; /* Fondo gris oscuro al pasar el mouse */
-}
-
-.page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 40px;
   width: 100%;
-  margin-top: 60px; /* Aseguramos espacio suficiente para el navbar fijo */
+  background-color: black; /* Fondo negro */
+}
+
+.navbar button:hover, .tool-buttons button:hover{
+  background-color: #6e6b6b; /* Fondo gris oscuro al pasar el mouse */
 }
 
 .tools {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  gap: 5px;
   background-color: #fff; /* Fondo blanco */
-  border-radius: 3px;
-  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 360px;
   text-align: center;
 }
 
-h1 {
-  padding: 0px;
-  margin: 0px;
-  color: #000; /* Texto negro */
-  margin-bottom: 2rem;
+.tool-h1 {
+  margin: 10px, 0px, 0px, 0px;
+}
+.tool-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ 
 }
 
-.button_tools {
-  padding: 1rem;
-  border: 2px solid #000; /* Borde negro */
-  border-radius: 3px;
-  margin-bottom: 1rem;
-  background-color: #fff; /* Fondo blanco */
-  color: #000; /* Texto negro */
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 10px, 10px, 10px, 0px;
+  position: fixed;
+  bottom: 0;
+  height: 40px;
   width: 100%;
-}
-
-.button_tools:hover {
-  background-color: #000; /* Fondo negro */
-  color: #fff; /* Texto blanco */
-}
-
-.hidden {
-  display: none;
-}
-
-a {
-  text-decoration: none;
-  color: unset;
-  width: 100%;
-  display: block;
-}
-
-.auth-visible {
-  width: 100px;
-}
-@media (min-width: 768px) {
-  body {
-    padding: 40px;
-  }
-
-  .tools {
-    max-width: 480px;
-  }
+  background-color: black; /* Fondo negro */
+  color: white;
 }

@@ -6,18 +6,24 @@
   <link rel="shortcut icon" href="/images/logo_tonilogar.png" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="/css/main.css">
   <title>Watching the Earth</title>
+ 
 </head>
 <body>
+  <div class="background-container">
+    <div class="background bg1" id="bg1"></div>
+    <div class="background bg2" id="bg2"></div>
+  </div>
+
   <nav class="navbar">
       <button id="log-in" onclick="login()" class="log-in">Log in</button>
-      <button href="/external-api" id="start" class="start">Start</button>
+      <button id="start" class="start">Start</button>
       <button href="#" class="log-out" id="logout" onclick="logout()">Log out</button>
   </nav>
   
   <div class="tools">
     <h1 class="tool-h1">Select tool</h1>
     <div class="tool-buttons">
-      <a href='./tool_01.html'><button class="tool-button_01">TOOL 111111111111111111111111111111111111111111111111</button></a>
+      <a href='./tool_01.html'><button class="tool-button_01">TOOL 1</button></a>
       <a href='./tool_02.html'><button class="tool-button_02">TOOL 2</button></a>
       <a href='./tool_03.html'><button class="tool-button_03">TOOL 3</button></a>
       <a href='./tool_04.html'><button class="tool-button_04">TOOL 4</button></a>
@@ -30,6 +36,8 @@
   </div>
 
   <footer class="footer">FOOTER</footer>
-  
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

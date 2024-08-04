@@ -51,19 +51,6 @@ const configureClient = async () => {
   });
 };
 
-window.onload = async () => {
-  await configureClient();
-
-  // Obtener y mostrar test_variable
-  const testVariable = await fetchTestVariable();
-  console.log('Test Variable:', testVariable);
-
-  // Actualizar el contenido del elemento HTML
-  document.getElementById('test-variable-display').innerText = testVariable;
-
-  // El resto de tu código...
-};
-
 /**
  * Starts the authentication flow
  */

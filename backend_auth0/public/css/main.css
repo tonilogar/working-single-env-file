@@ -95,6 +95,27 @@ a {
 .auth-visible {
   width: 100px;
 }
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+.cookie-banner button {
+  background-color: #008cba;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
 @media (min-width: 768px) {
   body {
     padding: 40px;

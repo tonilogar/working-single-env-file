@@ -1,5 +1,55 @@
-// The Auth0 client, initialized in configureClient()
 let auth0Client = null;
+
+// Función para obtener el token JWT
+const getJwtToken = async () => {
+  const response = await fetch("/generate_token", {
+    method: 'POST'
+  });
+  const data = await response.json();
+  return data.token;
+};
+
+/**
+ * Retrieves the auth configuration from the server
+ */
+const fetchAuthConfig = async () => {
+  const token = await getJwtToken();
+  return fetch("/auth_config", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
+
+/**
+ * Retrieves the test variable from the server
+ */
+const fetchTestVariable = async () => {
+  const token = await getJwtToken();
+  const response = await fetch("/test_variable", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  const data = await response.json();
+  return data.test_variable;
+};
+
+/**
+ * Initializes the Auth0 client
+ */
+const configureClient = async () => {
+  const response = await fetchAuthConfig();
+  const config = await response.json();
+
+  auth0Client = await auth0.createAuth0Client({
+    domain: config.domain,
+    clientId: config.clientId,
+    authorizationParams: {
+      audience: config.audience
+    }
+  });
+};
 
 /**
  * Starts the authentication flow
@@ -38,27 +88,6 @@ const logout = async () => {
   } catch (err) {
     console.log("Log out failed", err);
   }
-};
-
-/**
- * Retrieves the auth configuration from the server
- */
-const fetchAuthConfig = () => fetch("/auth_config");
-
-/**
- * Initializes the Auth0 client
- */
-const configureClient = async () => {
-  const response = await fetchAuthConfig();
-  const config = await response.json();
-
-  auth0Client = await auth0.createAuth0Client({
-    domain: config.domain,
-    clientId: config.clientId,
-    authorizationParams: {
-      audience: config.audience
-    }
-  });
 };
 
 /**
@@ -105,6 +134,13 @@ const callApi = async () => {
 // Will run when page finishes loading
 window.onload = async () => {
   await configureClient();
+
+  // Obtener y mostrar test_variable
+  const testVariable = await fetchTestVariable();
+  console.log('Test Variable:', testVariable);
+
+  // Actualizar el contenido del elemento HTML
+  document.getElementById('test-variable-display').innerText = testVariable;
 
   // If unable to parse the history hash, default to the root URL
   if (!showContentFromUrl(window.location.pathname)) {

@@ -36,6 +36,19 @@ const fetchTestVariable = async () => {
 };
 
 /**
+ * Retrieves the environment variables from the server
+ */
+const fetchEnvVariables = async () => {
+  const token = await getJwtToken();
+  const response = await fetch('/env_variables', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.json();
+};
+
+/**
  * Initializes the Auth0 client
  */
 const configureClient = async () => {
@@ -141,6 +154,11 @@ window.onload = async () => {
 
   // Actualizar el contenido del elemento HTML
   document.getElementById('test-variable-display').innerText = testVariable;
+
+  // Obtener y usar las variables de entorno para actualizar los enlaces
+  const env = await fetchEnvVariables();
+  document.getElementById('statusProjectsLink').href = `http://localhost:${env.VITE_PORT_FRONTEND_01_DOCKER}/`;
+  document.getElementById('subsidencesLink').href = `http://localhost:${env.VITE_PORT_FRONTEND_02_DOCKER}/`;
 
   // If unable to parse the history hash, default to the root URL
   if (!showContentFromUrl(window.location.pathname)) {

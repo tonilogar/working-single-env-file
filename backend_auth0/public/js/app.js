@@ -137,7 +137,7 @@ window.onload = async () => {
 
   // Obtener y mostrar test_variable
   const testVariable = await fetchTestVariable();
-  console.log('Test Variable:', testVariable);
+  console.log('Test Variable:', testVariable); 
 
   // Actualizar el contenido del elemento HTML
   document.getElementById('test-variable-display').innerText = testVariable;

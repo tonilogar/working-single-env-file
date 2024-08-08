@@ -9,8 +9,7 @@ const jwt = require("jsonwebtoken");
 // Crea una instancia de la aplicación Express
 const app = express();
 
-// Obtiene una variable de entorno de prueba
-const test_variable =  process.env.TEST_VARIABLE_DOCKER
+
 
 // Configuración de autenticación obtenida de variables de entorno
 const authConfig = {
@@ -65,12 +64,33 @@ app.get('/auth_config', (req, res) => {
   }
 });
 
+/* Test para pasar una variable del fichero .env leerla con docker-compose y 
+utilizarla en el html// 
+Obtiene una variable de entorno de prueba */
+const test_variable =  process.env.TEST_VARIABLE_DOCKER
 // Ruta para obtener la variable de prueba, verificando primero el token JWT
 app.get('/test_variable', (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   try {
     jwt.verify(token, authConfig.jwtSecret); 
     res.json({ test_variable }); 
+  } catch (error) {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+});
+
+// Obtiene las variables de entorno necesarias
+const envVariables = {
+  VITE_PORT_FRONTEND_01_DOCKER: process.env.VITE_PORT_FRONTEND_01_DOCKER,
+  VITE_PORT_FRONTEND_02_DOCKER: process.env.VITE_PORT_FRONTEND_02_DOCKER
+};
+
+app.get('/env_variables', (req, res) => {
+  const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
+  try {
+    if (!token) throw new Error('No token provided');
+    jwt.verify(token, authConfig.jwtSecret);
+    res.json(envVariables);
   } catch (error) {
     res.status(401).json({ error: 'Unauthorized' });
   }

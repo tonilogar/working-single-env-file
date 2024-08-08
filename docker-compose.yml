@@ -14,6 +14,8 @@ services:
       - JWT_SECRET_DOCKER=${JWT_SECRET}
       - NICKNAME_AUTH0_DOCKER=${NICKNAME_AUTH0}
       - TEST_VARIABLE_DOCKER=${TEST_VARIABLE}
+      - VITE_PORT_FRONTEND_01_DOCKER=${VITE_PORT_FRONTEND_01}
+      - VITE_PORT_FRONTEND_02_DOCKER=${VITE_PORT_FRONTEND_02}
     build:
       context: ./backend_auth0
     ports:
@@ -40,9 +42,10 @@ services:
     command: ${COMMAND}
   frontend_01:
     environment:
-      - VITE_VARIABLE_FRONTEND_01=${VITE_VARIABLE_FRONTEND_01} 
-      - VITE_PORT_BACKEND_API_REST=${VITE_PORT_BACKEND_API_REST} 
-      - VITE_PORT_FRONTEND_01=${VITE_PORT_FRONTEND_01} 
+      - VITE_VARIABLE_FRONTEND_01_DOCKER=${VITE_VARIABLE_FRONTEND_01} 
+      - VITE_PORT_BACKEND_API_REST_DOCKER=${VITE_PORT_BACKEND_API_REST} 
+      #VITE_PORT_FRONTEND_01_DOCKER Esta variable hay que añadirla al fichero vite.config.js
+      - VITE_PORT_FRONTEND_01_DOCKER=${VITE_PORT_FRONTEND_01} 
     build:
       context: ./frontend_01
     ports:
@@ -50,6 +53,23 @@ services:
     volumes:
       #- ./frontend_01/dist:/usr/src/app #para producción
       - ./frontend_01:/app
+      - /app/node_modules
+    command: ${VITE_COMMAND}
+    networks:
+      - app-network
+  frontend_02:
+    environment:
+      - VITE_VARIABLE_FRONTEND_02_DOCKER=${VITE_VARIABLE_FRONTEND_02} 
+      - VITE_PORT_BACKEND_API_REST_DOCKER=${VITE_PORT_BACKEND_API_REST} 
+      #VITE_PORT_FRONTEND_02_DOCKER Esta variable hay que añadirla al fichero vite.config.js
+      - VITE_PORT_FRONTEND_02_DOCKER=${VITE_PORT_FRONTEND_02} 
+    build:
+      context: ./frontend_02
+    ports:
+      - "${VITE_PORT_FRONTEND_02}:${VITE_PORT_FRONTEND_02}"
+    volumes:
+      #- ./frontend_01/dist:/usr/src/app #para producción
+      - ./frontend_02:/app
       - /app/node_modules
     command: ${VITE_COMMAND}
     networks:

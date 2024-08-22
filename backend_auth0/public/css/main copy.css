@@ -1,106 +1,28 @@
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  background-color: #fff; /* Fondo blanco */
-  color: #000; /* Texto negro */
-}
-
-.navbar {
-  display: flex;
-  justify-content: flex-start; /* Alineamos los elementos al inicio (izquierda) */
-  align-items: center;
-  background-color: #000; /* Fondo negro */
-  padding: 10px 20px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-}
-
-.navbar .left {
-  display: flex;
-  align-items: center;
-}
-
-.navbar a, .navbar button {
-  color: #fff; /* Texto blanco */
-  text-decoration: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.navbar a:hover, .navbar button:hover {
-  background-color: #333; /* Fondo gris oscuro al pasar el mouse */
-}
-
-.page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 60px; /* Aseguramos espacio suficiente para el navbar fijo */
-}
-
-.tools {
-  background-color: #fff; /* Fondo blanco */
-  border-radius: 3px;
-  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 360px;
-  text-align: center;
-}
-
-h1 {
-  padding: 0px;
-  margin: 0px;
-  color: #000; /* Texto negro */
-  margin-bottom: 2rem;
-}
-
-.button_tools {
-  padding: 1rem;
-  border: 2px solid #000; /* Borde negro */
-  border-radius: 3px;
-  margin-bottom: 1rem;
-  background-color: #fff; /* Fondo blanco */
-  color: #000; /* Texto negro */
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-  width: 100%;
-}
-
-.button_tools:hover {
-  background-color: #000; /* Fondo negro */
-  color: #fff; /* Texto blanco */
-}
-
 .hidden {
   display: none;
 }
 
-a {
-  text-decoration: none;
-  color: unset;
-  width: 100%;
+label {
+  margin-bottom: 10px;
   display: block;
 }
 
-.auth-visible {
-  width: 100px;
+.navbar {
+  min-height: 115px;
 }
-@media (min-width: 768px) {
-  body {
-    padding: 40px;
-  }
 
-  .tools {
-    max-width: 480px;
-  }
+.result-block-container .result-block {
+  opacity: 0;
+}
+
+.result-block-container .result-block.show {
+  opacity: 1;
+}
+
+.button-login {
+  background-color: green;
+}
+
+.button-logout {
+  background-color: red;
 }

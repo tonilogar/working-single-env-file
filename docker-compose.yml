@@ -16,6 +16,14 @@ services:
       - TEST_VARIABLE_DOCKER=${TEST_VARIABLE}
       - VITE_PORT_FRONTEND_01_DOCKER=${VITE_PORT_FRONTEND_01}
       - VITE_PORT_FRONTEND_02_DOCKER=${VITE_PORT_FRONTEND_02}
+      - VITE_PORT_FRONTEND_03_DOCKER=${VITE_PORT_FRONTEND_03}
+      - VITE_PORT_FRONTEND_04_DOCKER=${VITE_PORT_FRONTEND_04}
+      - VITE_PORT_FRONTEND_05_DOCKER=${VITE_PORT_FRONTEND_05}
+      - VITE_PORT_FRONTEND_06_DOCKER=${VITE_PORT_FRONTEND_06}
+      - VITE_PORT_FRONTEND_07_DOCKER=${VITE_PORT_FRONTEND_07}
+      - VITE_PORT_FRONTEND_08_DOCKER=${VITE_PORT_FRONTEND_08}
+      - VITE_PORT_FRONTEND_09_DOCKER=${VITE_PORT_FRONTEND_09}
+      - VITE_PORT_FRONTEND_10_DOCKER=${VITE_PORT_FRONTEND_10}
     build:
       context: ./backend_auth0
     ports:
@@ -46,6 +54,7 @@ services:
       - VITE_PORT_BACKEND_API_REST_DOCKER=${VITE_PORT_BACKEND_API_REST} 
       #VITE_PORT_FRONTEND_01_DOCKER Esta variable hay que añadirla al fichero vite.config.js
       - VITE_PORT_FRONTEND_01_DOCKER=${VITE_PORT_FRONTEND_01} 
+      - VITE_PORT_BACKEND_AUTH0_DOCKER=${PORT_BACKEND_AUTH0}
     build:
       context: ./frontend_01
     ports:
@@ -63,6 +72,7 @@ services:
       - VITE_PORT_BACKEND_API_REST_DOCKER=${VITE_PORT_BACKEND_API_REST} 
       #VITE_PORT_FRONTEND_02_DOCKER Esta variable hay que añadirla al fichero vite.config.js
       - VITE_PORT_FRONTEND_02_DOCKER=${VITE_PORT_FRONTEND_02} 
+      - VITE_PORT_BACKEND_AUTH0_DOCKER=${PORT_BACKEND_AUTH0}
     build:
       context: ./frontend_02
     ports:
@@ -74,6 +84,21 @@ services:
     command: ${VITE_COMMAND}
     networks:
       - app-network
+
+  nginx:
+     image: nginx:latest
+     ports:
+       - "80:80"
+     volumes:
+       - ./nginx.conf:/etc/nginx/nginx.conf
+     depends_on:
+       - frontend_01
+       - frontend_02
+       - backend_auth0
+       - backend_api_rest
+     networks:
+       - app-network
+
 networks:
   app-network:
     driver: bridge

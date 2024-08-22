@@ -2,8 +2,16 @@ const express = require('express');
 const app = express();
 const connectToMongoDB = require('./database/mongo-db');
 const apiRoutes = require('./endpoints/endpoints');
+const cors = require('cors');
 
 const port = process.env.PORT_BACKEND_API_REST_DOCKER || 3001;
+
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:5174'], // Cambia esto si usas otras URLs o puertos
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 
 app.use('/api', apiRoutes);
 

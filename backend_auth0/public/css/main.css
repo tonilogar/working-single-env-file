@@ -8,7 +8,7 @@ body {
   color: #000; /* Texto negro */
 }
 
-.navbar {
+.login {
   display: flex;
   justify-content: flex-start; /* Alineamos los elementos al inicio (izquierda) */
   align-items: center;
@@ -20,12 +20,12 @@ body {
   z-index: 1000;
 }
 
-.navbar .left {
+.login .left {
   display: flex;
   align-items: center;
 }
 
-.navbar a, .navbar button {
+.login a, .login button {
   color: #fff; /* Texto blanco */
   text-decoration: none;
   background: none;
@@ -35,7 +35,7 @@ body {
   font-size: 16px;
 }
 
-.navbar a:hover, .navbar button:hover {
+.login a:hover, .login button:hover {
   background-color: #333; /* Fondo gris oscuro al pasar el mouse */
 }
 
@@ -44,7 +44,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 60px; /* Aseguramos espacio suficiente para el navbar fijo */
+  margin-top: 60px; /* Aseguramos espacio suficiente para el login fijo */
 }
 
 .tools {

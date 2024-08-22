@@ -50,7 +50,7 @@ const isRouteLink = (element) =>
  * @param {*} id The id of the content to show
  */
 const showContent = (id) => {
-  /* eachElement(".reset-on-nav", (e) => e.classList.remove("show")); */
+  eachElement(".reset-on-nav", (e) => e.classList.remove("show"));
   eachElement(".page", (p) => p.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 };
@@ -65,18 +65,17 @@ const updateUI = async () => {
     if (isAuthenticated) {
       const user = await auth0Client.getUser();
 
-      /* document.getElementById("profile-data").innerText = JSON.stringify(
-        user,
-        null,
-        2
-      ); */
 
-      document.querySelectorAll("pre code").forEach(hljs.highlightBlock);
-
+      eachElement(".profile-image", (e) => (e.src = user.picture));
+      eachElement(".user-name", (e) => (e.innerText = user.name));
+      eachElement(".user-email", (e) => (e.innerText = user.email));
+      eachElement(".auth-invisible", (e) => e.classList.add("hidden"));
       eachElement(".auth-visible", (e) => e.classList.remove("hidden"));
+      document.querySelector(".button-login").style.display = "none";
     } else {
       eachElement(".auth-invisible", (e) => e.classList.remove("hidden"));
       eachElement(".auth-visible", (e) => e.classList.add("hidden"));
+      document.querySelector(".button-logout").style.display = "none";
     }
   } catch (err) {
     console.log("Error updating UI!", err);

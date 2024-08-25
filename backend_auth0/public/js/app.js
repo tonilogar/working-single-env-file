@@ -10,7 +10,8 @@ const login = async (targetUrl) => {
 
     const options = {
       authorizationParams: {
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.origin,
+        scope: "openid profile email offline_access"  // Incluye 'offline_access' para obtener Refresh Token
       }
     };
 
@@ -56,7 +57,8 @@ const configureClient = async () => {
     domain: config.domain,
     clientId: config.clientId,
     authorizationParams: {
-      audience: config.audience
+      audience: config.audience,
+      scope: "openid profile email offline_access"  // Asegúrate de que también esté aquí
     }
   });
 };
@@ -80,6 +82,7 @@ const requireAuth = async (fn, targetUrl) => {
 
 const callApi = async (targetUrl) => {
   try {
+    // Obtener token
     const token = await auth0Client.getTokenSilently();
     console.log('token', token);
 

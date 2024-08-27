@@ -21,7 +21,7 @@ const checkJwt = auth({
 });
 
 // Endpoint para obtener las variables de entorno necesarias para el frontend
-app.get('/config', (req, res) => {
+app.get('/config', checkJwt, (req, res) => {
   res.json({
     PORT_FRONTEND_01: process.env.VITE_PORT_FRONTEND_01_DOCKER,
     PORT_FRONTEND_02: process.env.VITE_PORT_FRONTEND_02_DOCKER,

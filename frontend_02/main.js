@@ -1,53 +1,78 @@
-// main.js
+import './style.css';
 
-import './style.css'
+const variable_frontend = import.meta.env.VITE_VARIABLE_FRONTEND_02_DOCKER;
+const port_frontend = import.meta.env.VITE_PORT_FRONTEND_02_DOCKER;
+const port_backend_api_rest = import.meta.env.VITE_PORT_BACKEND_API_REST_DOCKER;
+const port_backend_auth0 = import.meta.env.VITE_PORT_BACKEND_AUTH0_DOCKER;
 
-window.onload = () => {
-  const variable_frontend_02 = import.meta.env.VITE_VARIABLE_FRONTEND_02_DOCKER;
-  const port_frontend = import.meta.env.VITE_PORT_FRONTEND_02_DOCKER;
-  const port_backend_api_rest = import.meta.env.VITE_PORT_BACKEND_API_REST_DOCKER;
-  const port_backend_auth0 = import.meta.env.VITE_PORT_BACKEND_AUTH0_DOCKER;
+let projectsData = null; // Variable para almacenar los datos del proyecto
 
+// Función para verificar si el usuario está autenticado
+const checkAuthentication = async () => {
   try {
-    // Capturar el token de la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
+    const response = await fetch(`http://localhost:${port_backend_api_rest}/api/projects`, {
+      method: 'GET',
+      credentials: 'include' // Incluye las cookies en la solicitud
+    });
 
-    if (token) {
-      // Guardar el token en localStorage
-      localStorage.setItem('access_token', token);
-      console.log('Token JWT guardado en localStorage:', token);
+    if (response.ok) {
+      console.log('Usuario autenticado. Cargando aplicación...');
 
-      // Mostrar contenido si el token está presente
+      // Guardar los datos obtenidos de la petición en la variable projectsData
+      projectsData = await response.json();
+
+      // Imprimir los datos en la consola
+      console.log('Datos obtenidos de /api/projects:', projectsData);
+
+      // Mostrar el botón en la interfaz
       document.querySelector('#app').innerHTML = `
         <div>
+          <h1>¡Bienvenido! Usuario autenticado.</h1>
           <h1>frontend_01 puerto ${port_frontend}</h1>
-          <h1>${variable_frontend_02}</h1>
+          <h1>${variable_frontend}</h1>
+          <button id="fetch-projects" class="button">Obtener Proyectos</button>
+          <div id="projects-list"></div> <!-- Contenedor para mostrar los proyectos -->
         </div>
       `;
 
-      // Limpiar el token de la URL para evitar que quede expuesto
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // Agregar el evento al botón para mostrar los proyectos
+      document.getElementById('fetch-projects').addEventListener('click', () => {
+        displayProjects(projectsData);
+      });
 
     } else {
-      // Si no hay token en la URL, lanzar un error
-      throw new Error('Token no encontrado en la URL.');
+      throw new Error('No autenticado');
     }
-
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error('Usuario no autenticado. Redirigiendo al inicio de sesión...');
 
-    // Mostrar un mensaje de acceso no autorizado y redirigir después de un tiempo
+    console.log('No se encontró ningún token en la URL ni en las cookies.');
+
     document.querySelector('#app').innerHTML = `
       <div>
         <h1>Acceso no autorizado. Serás redirigido en breve...</h1>
         <p>Si no eres redirigido, haz clic <a href="http://localhost:${port_backend_auth0}">aquí</a> para iniciar sesión.</p>
       </div>
     `;
-
-    // Redirigir al backend de Auth0 después de 2 segundos
     setTimeout(() => {
       window.location.href = `http://localhost:${port_backend_auth0}`; // Ajusta la URL según sea necesario
     }, 2000);
   }
+};
+
+// Función para mostrar los proyectos en el HTML
+const displayProjects = (projects) => {
+  const projectsList = document.getElementById('projects-list');
+  projectsList.innerHTML = ''; // Limpiar contenido previo
+
+  projects.forEach(project => {
+    const projectItem = document.createElement('div');
+    projectItem.textContent = `Nombre del Proyecto: ${project.name}, Descripción: ${project.description}`;
+    projectsList.appendChild(projectItem);
+  });
+};
+
+// Ejecutar la verificación de autenticación cuando se cargue la página
+window.onload = () => {
+  checkAuthentication();
 };

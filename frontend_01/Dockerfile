@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # Exponer el puerto que usará Vite
-#EXPOSE 5174
+#EXPOSE 5173
 
 # Comando para iniciar Vite en modo desarrollo
-CMD ["npm", "run", "dev"]
+#CMD ["npm", "run", "dev"]

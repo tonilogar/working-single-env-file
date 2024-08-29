@@ -80,31 +80,78 @@ const requireAuth = async (fn, targetUrl) => {
 
 /* Calls the API endpoint with an authorization token */
 
-const callApi = async (targetUrl) => {
+/* const callApi = async (targetUrl) => {
   try {
-    // Obtener token
+    // Obtener el token de manera silenciosa
     const token = await auth0Client.getTokenSilently();
-    console.log('token', token);
+    //console.log('token', token);
 
-    // Guardar el token en el localStorage
-    localStorage.setItem('access_token', token);
-
-    const response = await fetch("/api/external", {
+    // Enviar el token al backend para manejo seguro
+    const storeResponse = await fetch("/api/store-token", {
+      method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ token })
     });
 
-    const responseData = await response.json();
-   
-    eachElement(".result-block", (c) => c.classList.add("show"));
+    if (storeResponse.ok) {
+      // Hacer la petición a la API externa con el token
+      const apiResponse = await fetch("/api/external", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-    // Redireccionar al frontend correspondiente, pasando el token en la URL
-    window.location.href = `${targetUrl}?token=${token}`;
-  } catch (e) {
-    console.error(e);
+      const responseData = await apiResponse.json();
+      console.log('API Response Data:', responseData);
+
+      // Redireccionar al frontend 5173
+      window.location.href = targetUrl;
+    } else {
+      console.error("Failed to send token to backend.");
+    }
+  } catch (error) {
+    console.error('Error in callApi:', error);
+  }
+}; */
+
+const callApi = async (targetUrl) => {
+  try {
+    // Obtener el token de manera silenciosa
+    const token = await auth0Client.getTokenSilently();
+    
+    // Imprimir el token en la consola
+    console.log('Access Token:', token);
+
+    // Enviar el token al backend para su validación
+    const response = await fetch('http://localhost:3000/api/validate-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Enviar el token en el header
+      }
+      
+    });
+
+    const result = await response.json();
+    console.log('Respuesta del backend:', result);
+
+    // Redirigir al frontend (targetUrl)
+    if (response.ok) {
+      console.log('redirigir al puerto 5173');
+      window.location.href = targetUrl;
+    } else {
+      console.error('Error en la validación del token:', result);
+    }
+  } catch (error) {
+    console.error('Error en callApi:', error);
   }
 };
+
+
+
 
 // Will run when page finishes loading
 window.onload = async () => {

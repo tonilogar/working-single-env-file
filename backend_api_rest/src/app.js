@@ -3,6 +3,9 @@ const app = express();
 const connectToMongoDB = require('./database/mongo-db');
 const apiRoutes = require('./endpoints/endpoints');
 const cors = require('cors');
+const cookieParser = require('cookie-parser'); // Importa cookie-parser
+
+
 
 const port = process.env.PORT_BACKEND_API_REST_DOCKER || 3001;
 
@@ -11,6 +14,11 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
+
+
+// Middleware para analizar cookies
+app.use(cookieParser()); // Añade cookie-parser aquí
+
 
 
 app.use('/api', apiRoutes);

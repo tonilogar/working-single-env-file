@@ -28,7 +28,7 @@ const checkAuthentication = async () => {
       document.querySelector('#app').innerHTML = `
         <div>
           <h1>¡Bienvenido! Usuario autenticado.</h1>
-          <h1>frontend_01 puerto ${port_frontend}</h1>
+          <h1>Puerto ${port_frontend}</h1>
           <h1>${variable_frontend}</h1>
           <button id="fetch-projects" class="button">Obtener Proyectos</button>
           <div id="projects-list"></div> <!-- Contenedor para mostrar los proyectos -->

@@ -4,28 +4,33 @@
    backend_auth0/public/app.js
 
 const callApi = async (targetUrl) => {
-try {
-// Obtener token
-const token = await auth0Client.getTokenSilently();
-console.log('token', token);
+  try {
+    // Obtener el token de manera silenciosa
+    const token = await auth0Client.getTokenSilently();
 
-    // Guardar el token en el localStorage
-    localStorage.setItem('access_token', token);
-
-    const response = await fetch("/api/external", {
+    // Enviar el token al backend para su validación
+    const response = await fetch('http://localhost:3000/api/validate-token', {
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Enviar el token en el header
       }
+
     });
 
-    const responseData = await response.json();
+    const result = await response.json();
+    console.log('Respuesta del backend:', result);
 
-    // Redireccionar al frontend correspondiente, pasando el token en la URL
-    window.location.href = `${targetUrl}?token=${token}`;
-
-} catch (e) {
-console.error(e);
-}
+    // Redirigir al frontend (targetUrl)
+    if (response.ok) {
+      console.log('redirigir al puerto 5173');
+      window.location.href = targetUrl;
+    } else {
+      console.error('Error en la validación del token:', result);
+    }
+  } catch (error) {
+    console.error('Error en callApi:', error);
+  }
 };
 
 2. Recepción del Token
@@ -46,7 +51,7 @@ const token = urlParams.get('token');
 Y lo utiliza para hacer peticiones a la API RESTful. 
 
 5. Petición de Datos a la API RESTful
-El Frontend 01 realiza una petición a la API RESTful en el puerto 3001, incluyendo el Access Token en los encabezados de la solicitud. 
+El Frontend 01 realiza una petición a la API RESTful en el puerto 3001, incluyendo el Access Token en los encabezados de la solicitud de las cookies. 
 
 6. Validación y Respuesta de la API
 La API RESTful valida el token, procesa la solicitud, y devuelve los datos al Frontend 01. 

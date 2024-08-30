@@ -78,52 +78,14 @@ const requireAuth = async (fn, targetUrl) => {
   return login(targetUrl);
 };
 
-/* Calls the API endpoint with an authorization token */
-
-/* const callApi = async (targetUrl) => {
-  try {
-    // Obtener el token de manera silenciosa
-    const token = await auth0Client.getTokenSilently();
-    //console.log('token', token);
-
-    // Enviar el token al backend para manejo seguro
-    const storeResponse = await fetch("/api/store-token", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ token })
-    });
-
-    if (storeResponse.ok) {
-      // Hacer la petición a la API externa con el token
-      const apiResponse = await fetch("/api/external", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await apiResponse.json();
-      console.log('API Response Data:', responseData);
-
-      // Redireccionar al frontend 5173
-      window.location.href = targetUrl;
-    } else {
-      console.error("Failed to send token to backend.");
-    }
-  } catch (error) {
-    console.error('Error in callApi:', error);
-  }
-}; */
 
 const callApi = async (targetUrl) => {
   try {
     // Obtener el token de manera silenciosa
     const token = await auth0Client.getTokenSilently();
-    
+
     // Imprimir el token en la consola
-    console.log('Access Token:', token);
+    //console.log('Access Token:', token);
 
     // Enviar el token al backend para su validación
     const response = await fetch('http://localhost:3000/api/validate-token', {
@@ -132,7 +94,6 @@ const callApi = async (targetUrl) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}` // Enviar el token en el header
       }
-      
     });
 
     const result = await response.json();
@@ -193,7 +154,7 @@ window.onload = async () => {
       button.setAttribute('data-port', port); // Asignar el puerto al atributo data-port
     }
 
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       callApi(`http://localhost:${port}/`);
     });
   });

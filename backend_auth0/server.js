@@ -29,21 +29,7 @@ const checkJwt = auth({
   issuerBaseURL: `https://${authConfig.domain}`,
 });
 
-// Endpoint para obtener las variables de entorno necesarias para el frontend
-app.get('/config', (req, res) => {
-  res.json({
-    PORT_FRONTEND_01: process.env.VITE_PORT_FRONTEND_01_DOCKER,
-    PORT_FRONTEND_02: process.env.VITE_PORT_FRONTEND_02_DOCKER,
-    PORT_FRONTEND_03: process.env.VITE_PORT_FRONTEND_03_DOCKER,
-    PORT_FRONTEND_04: process.env.VITE_PORT_FRONTEND_04_DOCKER,
-    PORT_FRONTEND_05: process.env.VITE_PORT_FRONTEND_05_DOCKER,
-    PORT_FRONTEND_06: process.env.VITE_PORT_FRONTEND_06_DOCKER,
-    PORT_FRONTEND_07: process.env.VITE_PORT_FRONTEND_07_DOCKER,
-    PORT_FRONTEND_08: process.env.VITE_PORT_FRONTEND_08_DOCKER,
-    PORT_FRONTEND_09: process.env.VITE_PORT_FRONTEND_09_DOCKER,
-    PORT_FRONTEND_10: process.env.VITE_PORT_FRONTEND_10_DOCKER,
-  });
-});
+
 
 if (!authConfig.domain || !authConfig.audience || !authConfig.clientId) {
   throw "Please make sure that variables are in place and populated";
@@ -99,22 +85,7 @@ app.get("/auth_config",  (req, res) => {
   });
 });
 
-/* app.post('/api/validate-token', checkJwt, (req, res) => {
-  // Si llegas aquí, el token ya ha sido validado correctamente por checkJwt
 
-  // No necesitas el token en el body porque ya está validado en req.auth
-  console.log('Token validado y decodificado:', req.auth);
-
-  // Crear la cookie si el token es válido
-  res.cookie('access_token', req.auth, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'Strict',
-    maxAge: 24 * 60 * 60 * 1000 // 1 día de duración (ajustable)
-  });
-
-  res.status(200).send({ msg: "Token validado correctamente y cookie creada." });
-}); */
 app.post('/api/validate-token', checkJwt, (req, res) => {
   // Si llegas aquí, el token ya ha sido validado correctamente por checkJwt
 
@@ -135,6 +106,21 @@ app.post('/api/validate-token', checkJwt, (req, res) => {
   res.status(200).send({ msg: "Token validado correctamente y cookie creada." });
 });
 
+// Endpoint para obtener las variables de entorno necesarias para el frontend
+app.get('/config', (req, res) => {
+  res.json({
+    PORT_FRONTEND_01: process.env.VITE_PORT_FRONTEND_01_DOCKER,
+    PORT_FRONTEND_02: process.env.VITE_PORT_FRONTEND_02_DOCKER,
+    PORT_FRONTEND_03: process.env.VITE_PORT_FRONTEND_03_DOCKER,
+    PORT_FRONTEND_04: process.env.VITE_PORT_FRONTEND_04_DOCKER,
+    PORT_FRONTEND_05: process.env.VITE_PORT_FRONTEND_05_DOCKER,
+    PORT_FRONTEND_06: process.env.VITE_PORT_FRONTEND_06_DOCKER,
+    PORT_FRONTEND_07: process.env.VITE_PORT_FRONTEND_07_DOCKER,
+    PORT_FRONTEND_08: process.env.VITE_PORT_FRONTEND_08_DOCKER,
+    PORT_FRONTEND_09: process.env.VITE_PORT_FRONTEND_09_DOCKER,
+    PORT_FRONTEND_10: process.env.VITE_PORT_FRONTEND_10_DOCKER,
+  });
+});
 
 app.use(function(err, req, res, next) {
   if (err.name === "UnauthorizedError") {

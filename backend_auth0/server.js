@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser()); // Usa cookie-parser
 
 const corsOptions = {
-  origin: 'http://localhost:5173', 
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176'],
   credentials: true 
 };
 app.use(cors(corsOptions));
@@ -35,37 +35,6 @@ if (!authConfig.domain || !authConfig.audience || !authConfig.clientId) {
   throw "Please make sure that variables are in place and populated";
 }
 
-app.post("/api/store-token", checkJwt, (req, res) => {
-  const token = req.body.token;
-
-  if (!token) {
-    return res.status(400).send({ msg: "Token is required" });
-  }
-
-  // Configurar y enviar la cookie
-  res.cookie('access_token', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'Strict',
-    maxAge: 24 * 60 * 60 * 1000 
-  });
-
-  res.status(200).send({ msg: "Token almacenado correctamente" });
-});
-
-app.get('/check-token', checkJwt, (req, res) => {
-  // Imprimir todas las cookies que se reciben con la solicitud
-  console.log("Cookies recibidas:", req.cookies);
-  console.log("access_token recibido:", req.cookies.access_token);
-
-  if (req.cookies.access_token) {
-    console.log("Access Token recibido:", req.cookies.access_token);
-    res.status(200).send({ msg: "Token válido." });
-  } else {
-    console.log("No se encontró la cookie 'access_token'.");
-    res.status(401).send({ msg: "Token no encontrado o inválido." });
-  }
-});
 
 app.use(morgan("dev"));
 app.use(helmet());
@@ -87,24 +56,44 @@ app.get("/auth_config",  (req, res) => {
 
 
 app.post('/api/validate-token', checkJwt, (req, res) => {
-  // Si llegas aquí, el token ya ha sido validado correctamente por checkJwt
+  try {
+    // Verificar si el encabezado Authorization existe y contiene el token JWT
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(400).send({ msg: "Token no proporcionado o malformado." });
+    }
 
-  // Aquí, req.auth contiene el token decodificado, pero necesitas el JWT original
-  const token = req.headers.authorization.split(' ')[1]; // Extrae el JWT original
+    // Extraer el token JWT del encabezado Authorization
+    const token = authHeader.split(' ')[1];
+    
+    if (!token) {
+      return res.status(400).send({ msg: "Token no encontrado en el encabezado Authorization." });
+    }
 
-  // No necesitas el token decodificado en el body porque ya está validado en req.auth
-  console.log('Token validado y decodificado:', req.auth);
+    // Log de depuración del token decodificado (ya validado por checkJwt)
+    console.log('Token decodificado:', req.auth);
 
-  // Crear la cookie con el token original si es válido
-  res.cookie('access_token', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'Strict',
-    maxAge: 24 * 60 * 60 * 1000 // 1 día de duración (ajustable)
-  });
+    // Opciones para la cookie, reutilizables en otras partes si es necesario
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'Strict',
+      maxAge: 24 * 60 * 60 * 1000 // 1 día de duración
+    };
 
-  res.status(200).send({ msg: "Token validado correctamente y cookie creada." });
+    // Configurar y enviar la cookie con el token original
+    res.cookie('access_token', token, cookieOptions);
+
+    // Responder con un mensaje de éxito más informativo
+    res.status(200).send({ msg: "Token validado y almacenado correctamente en la cookie." });
+
+  } catch (error) {
+    // Manejar cualquier error inesperado
+    console.error("Error en /api/validate-token:", error);
+    res.status(500).send({ msg: "Ocurrió un error al validar el token." });
+  }
 });
+
 
 // Endpoint para obtener las variables de entorno necesarias para el frontend
 app.get('/config', (req, res) => {

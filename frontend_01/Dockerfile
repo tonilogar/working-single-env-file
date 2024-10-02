@@ -12,8 +12,17 @@ RUN npm install
 # Copiar el resto del código de la aplicación
 COPY . .
 
+# Ejecutar la construcción para producción
+RUN npm run build
+
 # Exponer el puerto que usará Vite
 #EXPOSE 5173
 
 # Comando para iniciar Vite en modo desarrollo
 #CMD ["npm", "run", "dev"]
+
+# Exponer el puerto que usará Vite
+EXPOSE 5173
+
+# Comando para iniciar Vite en modo producción
+CMD ["npx", "serve", "-s", "dist"]

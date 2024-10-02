@@ -1,15 +1,25 @@
+# Usar una imagen oficial de Node.js 20-alpine como base
 FROM node:20-alpine
 
-RUN mkdir /app
-
+# Establecer el directorio de trabajo
 WORKDIR /app
 
-COPY package.json .
+# Copiar package.json y package-lock.json
+COPY package*.json ./
 
-RUN npm install 
+# Instalar las dependencias
+RUN npm install
 
+# Copiar el resto del código de la aplicación
 COPY . .
 
-#EXPOSE 3000
+# Exponer el puerto de la aplicación
+#EXPOSE 3000 #Lo expongo desde docker-compose
 
-#CMD ["node", "bin/www"]
+# Comando para ejecutar nodemon en modo desarrollo
+#CMD ["node", "bin/www"] #Loejecuto desde docker-compose
+
+# Exponer el puerto de la aplicación
+EXPOSE 3000
+
+CMD ["node", "bin/www"]

@@ -32,7 +32,7 @@ services:
     volumes:
       - ./backend_auth0:/app
       - /app/node_modules
-    command: ${COMMAND}
+    #command: ${COMMAND}
   backend_api_rest:
     environment:
       - ENV_VARIABLE_DOCKER=${ENV_VARIABLE}  
@@ -49,7 +49,7 @@ services:
     volumes:
       - ./backend_api_rest:/app
       - /app/node_modules
-    command: ${COMMAND}
+    #command: ${COMMAND}
   frontend_01:
     environment:
       - VITE_VARIABLE_FRONTEND_01_DOCKER=${VITE_VARIABLE_FRONTEND_01} 
@@ -61,10 +61,10 @@ services:
       context: ./frontend_01
     ports:
       - "${VITE_PORT_FRONTEND_01}:${VITE_PORT_FRONTEND_01}"
-    volumes:
-      #- ./frontend_01/dist:/usr/src/app #para producción
-      - ./frontend_01:/app
-      - /app/node_modules
+    #volumes:
+    #  - ./frontend_01/dist:/usr/src/app #para producción
+      #- ./frontend_01:/app
+      #- /app/node_modules
     command: ${VITE_COMMAND}
     networks:
       - app-network
@@ -79,10 +79,10 @@ services:
       context: ./frontend_02
     ports:
       - "${VITE_PORT_FRONTEND_02}:${VITE_PORT_FRONTEND_02}"
-    volumes:
-      #- ./frontend_01/dist:/usr/src/app #para producción
-      - ./frontend_02:/app
-      - /app/node_modules
+    #volumes:
+    #  - ./frontend_01/dist:/usr/src/app #para producción
+      #- ./frontend_02:/app
+      #- /app/node_modules
     command: ${VITE_COMMAND}
     networks:
       - app-network

@@ -1,5 +1,4 @@
 # Usar una imagen oficial de Node.js 20-alpine como base
-# Usar una imagen oficial de Node.js como base
 FROM node:20-alpine
 
 # Establecer el directorio de trabajo
@@ -19,3 +18,10 @@ COPY . .
 
 # Comando para ejecutar nodemon en modo desarrollo
 # CMD ["npm", "run", "dev"] #Loejecuto desde docker-compose
+
+# Exponer el puerto de la aplicación
+EXPOSE 3001
+
+
+CMD ["npm", "run", "start"] 
+
